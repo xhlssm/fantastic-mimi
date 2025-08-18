@@ -1,18 +1,29 @@
-
 // ================= 导入区 =================
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useStore } from '@/store';
 import DonateAuthor from '@/components/DonateAuthor';
 import SignInPanel from '@/components/ui/SignInPanel';
-
-// ================= 错误边界区 =================
-
-
-// ================= 动态组件区 =================
-
+import WebGLParticles from '@/components/ui/WebGLParticles';
+import AIAssistant from '@/components/ui/AIAssistant';
+import PWAPrompt from '@/components/ui/PWAPrompt';
+import AchievementSystem from '@/components/ui/AchievementSystem';
+import PluginCenter from '@/components/ui/PluginCenter';
+import WeatherWidget from '@/components/ui/WeatherWidget';
+import CountdownWidget from '@/components/ui/CountdownWidget';
 
 // ================= 组件实现 =================
 export default function ClientRoot({ children }: { children: React.ReactNode }) {
+  const { user, plugins } = useStore();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const weatherPlugin = plugins.find(p => p.id === 'weather');
+  const countdownPlugin = plugins.find(p => p.id === 'countdown');
+
   return (
     <div
       className='min-h-screen text-white'
@@ -29,8 +40,8 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
         overflowX: 'hidden',
       }}
     >
-      {/* 赛博发光线条背景 */}
-      {/* 绳网风格网格叠加 */}
+      {/* 背景和全局UI */}
+      <WebGLParticles />
       <div
         style={{
           position: 'fixed',
@@ -46,11 +57,20 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
           backgroundSize: '100px 100px, 100px 100px, 200px 200px, 200px 200px',
         }}
       />
-      <SignInPanel />
-  <div className="fade-in slide-up scale-in" style={{ transition: 'opacity 0.8s' }}>{children}</div>
-      <div className='fixed bottom-6 right-6 z-50'>
-        <DonateAuthor />
-      </div>
+      
+      {isClient && !user && <SignInPanel />}
+
+      {isClient && user && (
+        <>
+          <div className="fade-in slide-up scale-in" style={{ transition: 'opacity 0.8s' }}>{children}</div>
+          <AIAssistant />
+          <PluginCenter />
+          {weatherPlugin?.enabled && <WeatherWidget />}
+          {countdownPlugin?.enabled && <CountdownWidget />}
+        </>
+      )}
+
+      <PWAPrompt />
     </div>
   );
 }

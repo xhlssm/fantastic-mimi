@@ -6,14 +6,14 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Star, MessageCircle, Edit2, Wand2, SunMoon, Monitor, Sparkles, Zap, Book, Paintbrush, UserPlus, Code } from 'lucide-react';
+import { Star, MessageCircle, Edit2, Wand2, SunMoon, Monitor, Sparkles, Zap, Book, Paintbrush, UserPlus, Code, UserCheck, UserX } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import Card3D from './ui/Card3D';
 
 export default function UserProfile({ username }: { username: string }) {
   // ================= 状态与store区 =================
-  const { users, user: currentUser, setView, updateUser, threads } = useStore();
+  const { users, user: currentUser, setView, updateUser, threads, toggleFollow } = useStore();
   const [editMode, setEditMode] = useState(false);
   const [editedBio, setEditedBio] = useState('');
   const [editedAvatar, setEditedAvatar] = useState('');
@@ -142,9 +142,10 @@ export default function UserProfile({ username }: { username: string }) {
                 <span className="text-xs text-[#B0B0CC] bg-[#2B2B4A] px-2 py-1 rounded-full">{profileUser.title}</span>
                 {profileUser.isAdmin && <Badge className="bg-red-600">管理员</Badge>}
               </div>
-              <div className="flex items-center justify-center md:justify-start space-x-2 mt-2 text-yellow-400">
-                <Star size={18} className="animate-bounce" />
-                <span>{profileUser.reputation} 声望</span>
+              <div className="flex items-center justify-center md:justify-start space-x-4 mt-2 text-white/70">
+                <span><strong className="text-white">{profileUser.following.length}</strong> 关注</span>
+                <span><strong className="text-white">{profileUser.followers.length}</strong> 粉丝</span>
+                <span><strong className="text-white">{profileUser.reputation}</strong> 声望</span>
               </div>
               {profileUser.faction && (
                 <div className="flex items-center justify-center md:justify-start space-x-2 mt-2 text-[#B0B0CC]">
@@ -180,7 +181,13 @@ export default function UserProfile({ username }: { username: string }) {
                   <Button onClick={()=>{setEditMode(true);setActiveStep(0);}} className="bg-[#FF00FF] hover:bg-[#FF88FF] text-[#1A1A2E] animate-glow"><Edit2 className="mr-2" /> 编辑资料</Button>
                 )}
                 {currentUser && currentUser.id !== profileUser.id && (
-                  <Button onClick={()=>setView('messages', profileUser.username)} className="bg-[#00E4FF] hover:bg-[#00BFFF] text-[#1A1A2E] animate-glow"><MessageCircle className="mr-2" /> 发送私信</Button>
+                  <>
+                    <Button onClick={() => toggleFollow(profileUser.id)} className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white animate-glow">
+                      {currentUser.following.includes(profileUser.id) ? <UserX className="mr-2" /> : <UserCheck className="mr-2" />}
+                      {currentUser.following.includes(profileUser.id) ? '取消关注' : '关注'}
+                    </Button>
+                    <Button onClick={()=>setView('messages', profileUser.username)} className="bg-[#00E4FF] hover:bg-[#00BFFF] text-[#1A1A2E] animate-glow"><MessageCircle className="mr-2" /> 发送私信</Button>
+                  </>
                 )}
               </div>
               {/* 主题切换 */}

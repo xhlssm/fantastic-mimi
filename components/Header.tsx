@@ -4,7 +4,7 @@ import { useStore } from '@/store';
 import type { View } from '@/store';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { LogOut, LayoutDashboard, MessageCircle, ShoppingCart, Users, Trophy, ChevronDown, User, Sparkles, UserPlus, CircleUser, List, Bell, Shield, Book, Paintbrush, Code } from 'lucide-react';
+import { LogOut, LayoutDashboard, MessageCircle, ShoppingCart, Users, Trophy, ChevronDown, User, Sparkles, UserPlus, CircleUser, List, Bell, Shield, Book, Paintbrush, Code, Server } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Badge } from '@/components/ui/badge';
@@ -21,8 +21,9 @@ const navItems: { view: View; icon: any; label: string }[] = [
 ];
 
 export default function Header() {
-  const { user, logout, activeView, setView, activeTheme, toggleTheme, notifications } = useStore();
+  const { user, logout, activeView, setView, activeTheme, toggleTheme, notifications, instances, currentInstanceId, switchInstance } = useStore();
   const unreadNotifications = notifications.filter(n => !n.read).length;
+  const currentInstance = instances[currentInstanceId];
 
   const handleLogout = () => {
     if (confirm('你确定要注销吗？')) {
@@ -50,10 +51,39 @@ export default function Header() {
     >
       <div className="flex items-center space-x-4 mb-4 md:mb-0">
         <Image src="/logo.png" alt="绳网" width={40} height={40} className="w-12 h-12 drop-shadow-glow" />
-        <h1 className="text-3xl font-extrabold text-[#00E4FF] neon-text drop-shadow-glow tracking-widest">绳网终端</h1>
+        <div>
+          <h1 className="text-3xl font-extrabold text-[#00E4FF] neon-text drop-shadow-glow tracking-widest">绳网终端</h1>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-xs text-[#B0B0CC] hover:text-white -mt-1 -ml-1">
+                <Server className="w-3 h-3 mr-1" />
+                {currentInstance.name}
+                <ChevronDown className="w-3 h-3 ml-1" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-72 glass-effect text-white border-[#00E4FF]/30 backdrop-blur-xl rounded-xl shadow-2xl">
+              <div className="font-bold mb-2">切换实例</div>
+              <div className="space-y-2">
+                {Object.values(instances).map(instance => (
+                  <Button
+                    key={instance.id}
+                    variant="ghost"
+                    className={`w-full justify-start text-left h-auto ${currentInstanceId === instance.id ? 'bg-white/10' : ''}`}
+                    onClick={() => switchInstance(instance.id)}
+                  >
+                    <div>
+                      <div className="font-bold">{instance.name}</div>
+                      <div className="text-xs text-white/70 whitespace-normal">{instance.description}</div>
+                    </div>
+                  </Button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
-  <nav className="flex flex-wrap justify-center md:justify-start gap-2">
+      <nav className="flex flex-wrap justify-center md:justify-start gap-2">
         <TooltipProvider>
           {navItems.map((item) => (
             <Tooltip key={item.view}>
@@ -108,6 +138,16 @@ export default function Header() {
               <div className="space-y-2">
                 <Button variant="ghost" className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg" onClick={() => setView('profile', user.username)}>
                   <CircleUser className="mr-2 h-4 w-4" /> <span>我的资料</span>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg" onClick={() => setView('achievements')}>
+                  <Trophy className="mr-2 h-4 w-4" /> <span>我的成就</span>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg" onClick={() => {
+                  // 这里可以触发一个打赏模态框，或者跳转到打赏页面
+                  // 简单起见，我们先用 alert 模拟
+                  alert('感谢您的支持！');
+                }}>
+                  <Sparkles className="mr-2 h-4 w-4" /> <span>打赏作者</span>
                 </Button>
                 {user.faction && (
                   <Button variant="ghost" className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg" onClick={() => setView('faction_page', user.faction)}>

@@ -1,22 +1,38 @@
 'use client';
 import { useStore, Thread } from '@/store';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { MessageCircle, ThumbsUp, ThumbsDown, Clock, Tag } from 'lucide-react';
+import { MessageCircle, ThumbsUp, ThumbsDown, Clock, Tag, Repeat } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { isImageUrl } from '@/lib/utils';
 import Image from 'next/image';
+import { Button } from '../ui/button';
 
 interface ThreadCardProps {
     thread: Thread;
 }
 
 export default function ThreadCard({ thread }: ThreadCardProps) {
-    const { users, setView } = useStore();
+    const { users, setView, toggleLike, toggleDislike, repostThread } = useStore();
     const author = users.find(u => u.id === thread.authorId);
 
     const hasImage = isImageUrl(thread.content);
+
+    const handleLike = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        toggleLike(thread.id, false);
+    };
+
+    const handleDislike = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        toggleDislike(thread.id, false);
+    };
+
+    const handleRepost = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        repostThread(thread.id);
+    };
 
         return (
             <motion.div
@@ -93,14 +109,18 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
                             </div>
                         )}
                         <div className="flex items-center space-x-4 text-sm text-[var(--light-gray)]">
-                            <span className="flex items-center space-x-1">
+                            <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:bg-green-500/10" onClick={handleLike}>
                                 <ThumbsUp size={16} className="text-[var(--neon-green)]" />
                                 <span>{thread.likes}</span>
-                            </span>
-                            <span className="flex items-center space-x-1">
+                            </Button>
+                            <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:bg-pink-500/10" onClick={handleDislike}>
                                 <ThumbsDown size={16} className="text-[var(--neon-pink)]" />
                                 <span>{thread.dislikes}</span>
-                            </span>
+                            </Button>
+                            <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:bg-blue-500/10" onClick={handleRepost}>
+                                <Repeat size={16} className="text-[var(--neon-blue)]" />
+                                <span>{thread.reposts}</span>
+                            </Button>
                         </div>
                     </CardContent>
                 </Card>

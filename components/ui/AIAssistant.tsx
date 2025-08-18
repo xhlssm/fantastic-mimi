@@ -2,6 +2,7 @@
 'use client';
 import { useState } from 'react';
 import { Bot, Send } from 'lucide-react';
+import { getMockAIResponse } from '@/lib/utils';
 
 export default function AIAssistant() {
   const [open, setOpen] = useState(false);
@@ -13,14 +14,15 @@ export default function AIAssistant() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    setMessages(msgs => [...msgs, { role: 'user', text: input }]);
+    const userInput = input;
+    setMessages(msgs => [...msgs, { role: 'user', text: userInput }]);
     setLoading(true);
-    // 模拟AI回复
-    setTimeout(() => {
-      setMessages(msgs => [...msgs, { role: 'ai', text: '（AI回复示例）' }]);
-      setLoading(false);
-    }, 1200);
     setInput('');
+    
+    const aiResponse = await getMockAIResponse(userInput);
+    
+    setMessages(msgs => [...msgs, { role: 'ai', text: aiResponse }]);
+    setLoading(false);
   };
 
   return (

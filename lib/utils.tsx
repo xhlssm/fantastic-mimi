@@ -48,3 +48,23 @@ export function FactionBadge({ faction }: { faction: string }) {
     </span>
   );
 }
+
+/**
+ * 模拟AI回复，支持多种模式
+ */
+export const getMockAIResponse = (input: string): Promise<string> => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const lowerInput = input.toLowerCase();
+      if (lowerInput.includes('翻译')) {
+        resolve(`（模拟翻译结果）: "${input.replace('翻译', '').trim()}" 的翻译是...`);
+      } else if (lowerInput.includes('摘要')) {
+        resolve(`（模拟摘要结果）: 对 "${input.replace('摘要', '').trim()}" 的内容摘要是...`);
+      } else if (lowerInput.includes('你好')) {
+        resolve('你好！有什么可以帮助你的吗？');
+      } else {
+        resolve('（模拟AI回复）: 我收到了你的消息："' + input + '"。正在思考如何回答...');
+      }
+    }, 1200);
+  });
+};

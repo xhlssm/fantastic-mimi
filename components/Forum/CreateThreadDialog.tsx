@@ -152,6 +152,8 @@ export default function CreateThreadDialog({ isOpen, onClose }: CreateThreadDial
                 tags,
                 authorId: user.id,
                 type: threadType,
+                reposts: 0,
+                quotes: 0,
                 missionDetails: threadType === 'mission' ? {
                     reward: missionReward,
                     deadline: Date.now() + 86400000 * 7,

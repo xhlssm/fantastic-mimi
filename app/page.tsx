@@ -8,12 +8,14 @@ import Leaderboard from "../components/Leaderboard";
 import Achievements from "../components/Achievements";
 import FactionPage from "../components/FactionPage";
 import AdminPanel from "../components/AdminPanel";
+import NavigationPanel from "@/components/Misskey/NavigationPanel";
+import WidgetPanel from "@/components/Misskey/WidgetPanel";
+import NotificationToast from "@/components/Misskey/NotificationToast";
+import MessageBox from "@/components/Misskey/MessageBox";
 
 // ================= 导入区 =================
 
-export default function Page() {
-  const { activeView, selectedUsername, user } = useStore();
-
+const renderView = (activeView: string, selectedUsername: any) => {
   switch (activeView) {
     case "forum":
       return <Forum />;
@@ -26,26 +28,37 @@ export default function Page() {
     case "achievements":
       return <Achievements />;
     case "faction_page":
-      return (
-        <>
-          <FactionPage factionId={(selectedUsername as FactionType | null) ?? null} />
-          {/* 帮派内聊天功能入口（预留） */}
-          <div style={{marginTop:32,background:'#181824cc',borderRadius:12,padding:'20px 16px',boxShadow:'0 2px 16px #00e4ff22'}}>
-            <div style={{fontSize:20,fontWeight:600,color:'#00e4ff',marginBottom:8}}>帮派聊天</div>
-            <div style={{color:'#e0eaff',fontSize:15,marginBottom:12}}>与帮派成员实时交流、分享资源、协作任务。<br />（功能即将上线，敬请期待！）</div>
-            {/* 未来可在此集成实时聊天组件，如 WebSocket 聊天、消息列表、输入框等 */}
-          </div>
-        </>
-      );
+      return <FactionPage factionId={(selectedUsername as FactionType | null) ?? null} />;
     case "factions":
-      return <div className="text-center text-[#00e4ff] text-2xl mt-20">派系功能即将上线</div>;
+      return <div className="text-center text-lg p-8">派系功能正在开发中...</div>;
     case "messages":
-      return <div className="text-center text-[#00e4ff] text-2xl mt-20">消息中心即将上线</div>;
+      return <MessageBox />;
     case "admin":
       return <AdminPanel />;
     default:
       return <Forum />;
   }
-}
+};
 
+export default function Page() {
+  const { activeView, selectedUsername, user } = useStore();
+
+  if (!user) {
+    // 如果未登录，可以显示一个登录页面或者直接在 ClientRoot 中处理
+    return null; // ClientRoot 中已经有 SignInPanel
+  }
+
+  return (
+    <div className="grid grid-cols-[auto_1fr_auto] h-screen">
+      <NavigationPanel />
+      <main className="overflow-y-auto">
+        <div className="max-w-2xl mx-auto py-8 px-4">
+          {renderView(activeView, selectedUsername)}
+        </div>
+      </main>
+      <WidgetPanel />
+      <NotificationToast />
+    </div>
+  );
+}
 // ================= 组件实现 =================
