@@ -180,8 +180,11 @@ export default function AcademicForum() {
     if (!user) {
       // 使用 store 中的用户数据，而不是 mockUsers
       const { users } = useStore.getState();
+      console.log('尝试自动登录，用户列表:', users);
       if (users.length > 0) {
+        console.log('尝试登录用户:', users[0].username);
         login(users[0].username, 'password');
+        console.log('登录后用户状态:', useStore.getState().user);
       }
     }
   }, [user, login]);

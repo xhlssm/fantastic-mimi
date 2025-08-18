@@ -70,6 +70,14 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
         </>
       )}
 
+      {/* 调试信息 */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded text-xs">
+          isClient: {isClient ? 'true' : 'false'}<br />
+          user: {user ? user.username : 'null'}
+        </div>
+      )}
+
       <PWAPrompt />
     </div>
   );
