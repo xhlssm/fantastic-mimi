@@ -67,14 +67,14 @@ export default function Navbar({
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <nav className="bg-gray-800 border-b border-gray-600 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
             <button
               onClick={() => onNavigate?.('/')}
-              className="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="flex items-center space-x-2 text-xl font-bold text-white hover:text-blue-400 transition-colors"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-white" />
@@ -89,7 +89,7 @@ export default function Navbar({
               <button
                 key={item.path}
                 onClick={() => onNavigate?.(item.path)}
-                className="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="flex items-center space-x-1 text-gray-300 hover:text-blue-400 transition-colors"
               >
                 <item.icon size={18} />
                 <span>{item.label}</span>
@@ -126,7 +126,7 @@ export default function Navbar({
                 {/* Notifications */}
                 <button
                   onClick={onNotification}
-                  className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="relative p-2 text-gray-300 hover:text-blue-400 transition-colors"
                 >
                   <Bell size={20} />
                   {user.notifications && user.notifications > 0 && (
@@ -146,7 +146,7 @@ export default function Navbar({
                       <AvatarImage src={user.avatarUrl} alt={user.username} />
                       <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="hidden sm:block text-sm font-medium text-gray-300">
                       {user.username}
                     </span>
                   </button>
@@ -159,14 +159,14 @@ export default function Navbar({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
                         transition={{ duration: 0.1 }}
-                        className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50"
+                        className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-lg shadow-lg border border-gray-600 py-1 z-50"
                       >
                         <button
                           onClick={() => {
                             onNavigate?.(`/profile/${user.username}`);
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-white hover:bg-gray-600 transition-colors"
                         >
                           <User size={16} />
                           <span>个人主页</span>
@@ -176,12 +176,12 @@ export default function Navbar({
                             onSettings?.();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-white hover:bg-gray-600 transition-colors"
                         >
                           <Settings size={16} />
                           <span>设置</span>
                         </button>
-                        <hr className="my-1 border-gray-200 dark:border-gray-700" />
+                        <hr className="my-1 border-gray-600" />
                         <button
                           onClick={() => {
                             onLogout?.();
@@ -210,7 +210,7 @@ export default function Navbar({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="md:hidden p-2 text-gray-300 hover:text-blue-400 transition-colors"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -251,7 +251,7 @@ export default function Navbar({
                       onNavigate?.(item.path);
                       setIsMenuOpen(false);
                     }}
-                    className="flex items-center space-x-2 w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                    className="flex items-center space-x-2 w-full px-4 py-2 text-white hover:bg-gray-600 rounded-lg transition-colors"
                   >
                     <item.icon size={18} />
                     <span>{item.label}</span>

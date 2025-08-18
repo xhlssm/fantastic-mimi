@@ -150,7 +150,7 @@ export default function HomePage({
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="px-3 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:border-gray-600"
+                    className="px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-white"
                   >
                     <option value="latest">最新发布</option>
                     <option value="popular">最多浏览</option>
@@ -170,14 +170,14 @@ export default function HomePage({
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">当前筛选:</span>
+                    <span className="text-sm text-gray-400">当前筛选:</span>
                     <Tag text={selectedTag} variant="highlight" />
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setSelectedTag(null)}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="text-gray-400 hover:text-gray-200"
                   >
                     清除筛选
                   </Button>
@@ -204,13 +204,13 @@ export default function HomePage({
               <Card>
                 <CardContent className="p-12 text-center">
                   <div className="space-y-4">
-                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto">
+                    <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto">
                       <Search className="w-8 h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-semibold text-white">
                       没有找到相关帖子
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-400">
                       试试调整搜索条件或创建新的帖子
                     </p>
                     <Button onClick={onCreatePost}>
@@ -260,23 +260,23 @@ export default function HomePage({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Users className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm">注册用户</span>
+                  <span className="text-sm text-gray-300">注册用户</span>
                 </div>
                 <span className="font-semibold">{users.length}</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <BookOpen className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">帖子总数</span>
+                  <span className="text-sm text-gray-300">帖子总数</span>
                 </div>
                 <span className="font-semibold">{posts.length}</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <MessageCircle className="w-4 h-4 text-purple-500" />
-                  <span className="text-sm">总回复数</span>
+                  <span className="text-sm text-gray-300">总回复数</span>
                 </div>
-                <span className="font-semibold">
+                <span className="font-semibold text-purple-400">
                   {posts.reduce((sum, post) => sum + post.replies, 0)}
                 </span>
               </div>
