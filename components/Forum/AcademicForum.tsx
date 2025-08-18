@@ -177,8 +177,12 @@ export default function AcademicForum() {
   // 模拟用户登录
   useEffect(() => {
     // 自动登录第一个用户作为演示
-    if (!user && mockUsers.length > 0) {
-      login(mockUsers[0].username, 'password');
+    if (!user) {
+      // 使用 store 中的用户数据，而不是 mockUsers
+      const { users } = useStore.getState();
+      if (users.length > 0) {
+        login(users[0].username, 'password');
+      }
     }
   }, [user, login]);
 
