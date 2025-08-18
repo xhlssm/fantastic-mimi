@@ -174,20 +174,7 @@ export default function AcademicForum() {
   // 从store中获取用户信息
   const { user, login, logout } = useStore();
 
-  // 模拟用户登录
-  useEffect(() => {
-    // 自动登录第一个用户作为演示
-    if (!user) {
-      // 使用 store 中的用户数据，而不是 mockUsers
-      const { users } = useStore.getState();
-      console.log('尝试自动登录，用户列表:', users);
-      if (users.length > 0) {
-        console.log('尝试登录用户:', users[0].username);
-        login(users[0].username, 'password');
-        console.log('登录后用户状态:', useStore.getState().user);
-      }
-    }
-  }, [user, login]);
+  // 删除了自动登录逻辑，不再需要签到功能
 
   const handlePostClick = (postId: number) => {
     setSelectedPostId(postId);

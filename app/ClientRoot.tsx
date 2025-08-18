@@ -58,9 +58,7 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
         }}
       />
       
-      {isClient && !user && <SignInPanel />}
-
-      {isClient && user && (
+      {isClient && (
         <>
           <div className="fade-in slide-up scale-in" style={{ transition: 'opacity 0.8s' }}>{children}</div>
           <AIAssistant />
@@ -68,14 +66,6 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
           {weatherPlugin?.enabled && <WeatherWidget />}
           {countdownPlugin?.enabled && <CountdownWidget />}
         </>
-      )}
-
-      {/* 调试信息 */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded text-xs">
-          isClient: {isClient ? 'true' : 'false'}<br />
-          user: {user ? user.username : 'null'}
-        </div>
       )}
 
       <PWAPrompt />
